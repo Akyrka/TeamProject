@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+
+
+    <title>Головна сторінка</title>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a href="#"><strong>Мій Щоденник</strong></a>
+    </div>
+    <div class="user-menu">
+        <a href="{% url 'profile' %}">
+            {{ request.user.first_name|default:request.user.username }}
+        </a>
+    <form action="/logout/" method="post">
+        {% csrf_token %}
+        <button type="submit">Выйти з акаунта </button>
+    </form>
+    </div>
+</header>
+
+<main>
+    <h1>Ласкаво просимо, {{ request.user.first_name|default:request.user.username }}!</h1>
+</main>
+</body>
+</html>

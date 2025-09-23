@@ -1,0 +1,11 @@
+        body.bg-light {
+            background-color: #ccc !important;
+        }
+        .card {
+            background-color: darkgray !important;
+        }
+
+
+        label{
+            color:black
+        }
