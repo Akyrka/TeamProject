@@ -1,0 +1,12 @@
+{% extends "electronic_diary/home.html" %}
+
+{% block title %}Створення теми{% endblock %}
+
+{% block content %}
+<h1>Створити / Редагувати тему</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зберегти</button>
+</form>
+{% endblock %}

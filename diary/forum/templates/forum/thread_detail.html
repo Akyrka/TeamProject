@@ -1,0 +1,31 @@
+{% extends "electronic_diary/home.html" %}
+
+{% block title %}{{ thread.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ thread.title }}</h1>
+<p>Автор: {{ thread.author.username }} | Створено: {{ thread.created_at }}</p>
+
+<hr>
+<h2>Повідомлення:</h2>
+<ul>
+    {% for post in posts %}
+        <li>
+            <b>{{ post.author.username }}</b>: {{ post.content }}
+            <small>({{ post.created_at }})</small>
+        </li>
+    {% empty %}
+        <li>Ще немає повідомлень.</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Надіслати</button>
+</form>
+{% else %}
+<p><a href="{% url 'accounts:login' %}">Увійдіть</a>, щоб залишати повідомлення.</p>
+{% endif %}
+{% endblock %}

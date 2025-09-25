@@ -5,28 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'home.css' %}">
-
-
-    <title>Головна сторінка</title>
+    <title>{% block title %}Мій Щоденник{% endblock %}</title>
 </head>
 <body>
 <header>
     <div class="logo">
-        <a href="#"><strong>Мій Щоденник</strong></a>
+        <a href="/"><strong>Мій Щоденник</strong></a>
     </div>
+    <nav class="menu">
+        <a href="{% url 'forum:thread_list' %}">Форум</a>
+        <a href="{% url 'accounts:profile' %}">Профіль</a>
+    </nav>
     <div class="user-menu">
-        <a href="{% url 'profile' %}">
-            {{ request.user.first_name|default:request.user.username }}
-        </a>
-    <form action="/logout/" method="post">
-        {% csrf_token %}
-        <button type="submit">Выйти з акаунта </button>
-    </form>
+        {% if user.is_authenticated %}
+            <a href="{% url 'accounts:profile' %}">
+                {{ request.user.first_name|default:request.user.username }}
+            </a>
+            <form action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Вийти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'accounts:login' %}">Увійти</a> |
+            <a href="{% url 'accounts:register' %}">Реєстрація</a>
+        {% endif %}
     </div>
 </header>
 
 <main>
+    {% block content %}
     <h1>Ласкаво просимо, {{ request.user.first_name|default:request.user.username }}!</h1>
+
+
+    {% endblock %}
 </main>
 </body>
 </html>
