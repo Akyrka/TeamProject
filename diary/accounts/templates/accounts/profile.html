@@ -6,18 +6,21 @@
     <title>{{ profile.user.username }}'s Profile</title>
 </head>
 <body>
-    <h1>Профіль {{ profile.user.first_name }} {{ profile.user.last_name}}</h1>
+    <h1>Профіль {{ profile.user.first_name }} {{ profile.user.last_name }}</h1>
 
-    <!-- Аватар с дефолтной картинкой -->
+
     <img src="https://cdn-icons-png.flaticon.com/512/4837/4837857.png" alt="Аватар" width="150">
 
-    <!-- Можно добавить ссылки на редактирование -->
-    <p><a href="{% url 'profile_edit' %}">Редагувати профіль</a></p>
-    <form action="/logout/" method="post">
+
+    <p><a href="{% url 'accounts:profile_edit' %}">Редагувати профіль</a></p>
+
+
+    <form action="{% url 'accounts:logout' %}" method="post">
         {% csrf_token %}
-        <button type="submit">Выйти з акаунта </button>
+        <button type="submit">Вийти з акаунта</button>
     </form>
-    <a href="{% url 'home' %}">Повернутись на головну</a>
- </p>
+
+
+    <p><a href="{% url 'home' %}">Повернутись на головну</a></p>
 </body>
 </html>
