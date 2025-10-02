@@ -25,6 +25,7 @@
     {{ form.as_p }}
     <button type="submit">Надіслати</button>
 </form>
+<a href="/">Повернутись</a>
 {% else %}
 <p><a href="{% url 'accounts:login' %}">Увійдіть</a>, щоб залишати повідомлення.</p>
 {% endif %}

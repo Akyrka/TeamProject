@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Список завдань</title>
+</head>
+<body>
+        
+    <h1>Домашні завдання вашого класу</h1>
+
+    {% if user.teacher %}
+    <form method="get" action="">
+        <label for="class_id">Оберіть клас:</label>
+        <select name="class_id" id="class_id" onchange="this.form.submit()">
+            <option value="">Всі класи</option>
+            {% for school_class in school_classes %}
+                <option value="{{ school_class.id }}" {% if request.GET.class_id == school_class.id|stringformat:"s" %}selected{% endif %}>
+                    {{ school_class.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    {% endif %}
+    <ol>
+        {% for entry in object_list %}
+        <li>
+            <strong>Предмет:</strong> {{ entry.subject }}<br>
+            <strong>Вчитель:</strong> {{ entry.teacher.user.first_name }} {{ entry.teacher.user.last_name }}<br>
+            <strong>Домашнє завдання:</strong> {{ entry.homework|urlize }}<br>
+            <strong>До:</strong> {{ entry.due_date }}<br>
+        </li>
+        <hr>
+    {% empty %}
+        <li>Немає завдань для вашого класу</li>
+    {% endfor %}
+    </ol>
+
+    {% if request.user.is_authenticated and request.user.teacher %}
+        <a href="{% url 'electronic_diary:diary_create' %}">Додати нове завдання</a><br>
+    {% endif %}
+
+    <a href="{% url 'electronic_diary:home' %}">на головну</a>
+</body>
+</html>
