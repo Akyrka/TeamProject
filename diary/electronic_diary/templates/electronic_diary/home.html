@@ -10,11 +10,14 @@
 <body>
 <header>
     <div class="logo">
-        <a href="/"><strong>Мій Щоденник</strong></a>
+        <a href="{% url 'electronic_diary:diary' %}"><strong>Мій Щоденник</strong></a>
     </div>
     <nav class="menu">
         <a href="{% url 'forum:thread_list' %}">Форум</a>
-        <a href="{% url 'accounts:profile' %}">Профіль</a>
+    
+        {% if request.path != '/' %}
+            | <a href="/">Головна</a>
+        {% endif %}
     </nav>
     <div class="user-menu">
         {% if user.is_authenticated %}

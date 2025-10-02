@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додавання уроку</title>
+</head>
+<body>
+    <form method="post" >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" >Сохранить</button>
+    </form>
+
+    <a href="{% url 'electronic_diary:diary' %}">повернутись</a>
+    <a href="{% url 'electronic_diary:home' %}">на головну</a>
+</body>
+</html>
