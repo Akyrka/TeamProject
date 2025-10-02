@@ -5,4 +5,4 @@ class AccountsConfig(AppConfig):
     name = "accounts"
 
     def ready(self):
-        import accounts.signals  # импортируем сигналы при старте приложения
+        import accounts.signals  # <- важный импорт

@@ -5,18 +5,18 @@ from django.contrib.auth import login
 from django.views.generic import FormView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from . import models
 from .forms import CustomUserCreationForm, ProfileEditForm
+from accounts import models
 
 # Регистрация пользователя
 class RegisterView(FormView):
     template_name = "accounts/register.html"
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("electronic_diary:home")  # <-- имя маршрута главной страницы
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        login(self.request, user)  # сразу авторизация
         return super().form_valid(form)
 
 # Логин пользователя
@@ -25,9 +25,9 @@ class CustomLoginView(LoginView):
     authentication_form = AuthenticationForm
 
     def get_success_url(self):
-        return reverse_lazy("home")
+        return reverse_lazy("electronic_diary:home")
 
-# Логаут пользователя (✅ исправлено имя маршрута)
+# Логаут пользователя
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy("accounts:login")
 
@@ -45,7 +45,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     model = models.Profile
     form_class = ProfileEditForm
     template_name = 'accounts/profile_edit.html'
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('accounts:profile')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
