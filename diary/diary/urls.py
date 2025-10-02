@@ -22,8 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("electronic_diary.urls")),
-    path("accounts/", include(("accounts.urls", "accounts"), namespace="accounts")),
-    path("forum/", include("forum.urls")),
+    path("accounts/", include("accounts.urls", namespace="accounts")),
+    path("forum/", include("forum.urls", namespace="forum")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

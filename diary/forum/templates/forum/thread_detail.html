@@ -4,28 +4,41 @@
 
 {% block content %}
 <h1>{{ thread.title }}</h1>
-<p>Автор: {{ thread.author.username }} | Створено: {{ thread.created_at }}</p>
+<p><b>Автор:</b> {{ thread.author.username }} |
+   <b>Створено:</b> {{ thread.created_at }} |
+   <b>Оновлено:</b> {{ thread.updated_at }}</p>
+
+<div class="thread-description">
+    <p>{{ thread.description }}</p>
+</div>
 
 <hr>
-<h2>Повідомлення:</h2>
+<h2>Пости</h2>
 <ul>
     {% for post in posts %}
         <li>
-            <b>{{ post.author.username }}</b>: {{ post.content }}
-            <small>({{ post.created_at }})</small>
+            <p>{{ post.text }}</p>
+            <small>Автор: {{ post.author.username }} | {{ post.created_at }}</small>
         </li>
     {% empty %}
-        <li>Ще немає повідомлень.</li>
+        <li>Поки що немає постів у цій темі.</li>
     {% endfor %}
 </ul>
 
 {% if user.is_authenticated %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Надіслати</button>
-</form>
+    <h3>Додати відповідь</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Надіслати</button>
+    </form>
 {% else %}
-<p><a href="{% url 'accounts:login' %}">Увійдіть</a>, щоб залишати повідомлення.</p>
+    <p><a href="{% url 'accounts:login' %}">Увійдіть</a>, щоб залишити повідомлення.</p>
+{% endif %}
+
+{% if user.is_staff or user.is_superuser %}
+    <hr>
+    <a href="{% url 'forum:thread_update' thread.pk %}" class="btn">Редагувати тему</a>
+    <a href="{% url 'forum:thread_delete' thread.pk %}" class="btn">Видалити тему</a>
 {% endif %}
 {% endblock %}

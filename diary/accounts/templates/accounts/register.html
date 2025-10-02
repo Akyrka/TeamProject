@@ -30,7 +30,7 @@
     </div>
     {% endif %}
 
-    <form method="post" action="{% url 'register' %}">
+    <form method="post" action="{% url 'accounts:register' %}">
         {% csrf_token %}
 
         <div class="mb-3">
@@ -65,7 +65,7 @@
         <button type="submit" class="btn btn-primary w-100">Зареєструватися</button>
 
         <p class="mt-3 text-center">
-            Вже є акаунт? <a href="{% url 'login' %}">Увійти</a>
+            <a href="{% url 'accounts:login' %}">Увійти</a>
         </p>
     </form>
 </div>

@@ -1,12 +1,15 @@
 {% extends "electronic_diary/home.html" %}
 
-{% block title %}Створення теми{% endblock %}
+{% block title %}{% if form.instance.pk %}Редагувати тему{% else %}Створити тему{% endif %}{% endblock %}
 
 {% block content %}
-<h1>Створити / Редагувати тему</h1>
+<h1>{% if form.instance.pk %}Редагувати тему{% else %}Створити нову тему{% endif %}</h1>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Зберегти</button>
+    <button type="submit" class="btn">{% if form.instance.pk %}Зберегти{% else %}Створити{% endif %}</button>
 </form>
+
+<a href="{% url 'forum:thread_list' %}">Назад до списку тем</a>
 {% endblock %}
