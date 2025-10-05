@@ -11,6 +11,7 @@ class ThreadListView(ListView):
     template_name = "forum/thread_list.html"
     context_object_name = "threads"
     ordering = ["-updated_at"]
+    paginate_by = 10
 
 
 class ThreadDetailView(DetailView):
