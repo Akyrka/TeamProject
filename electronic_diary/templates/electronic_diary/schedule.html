@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule</title>
+</head>
+<body>
+
+<h1>Розклад уроків</h1>
+<strong>
+<a href="{% url 'electronic_diary:diary' %}"> Завдання</a><br>
+{% if user.is_authenticated and user.teacher %}
+    <a href="{% url 'electronic_diary:schedule-create' %}">Додати урок</a><br>
+{% endif %}
+    <a href="{% url 'electronic_diary:home' %}">На головну</a>
+</strong>
+
+{% if user.is_authenticated and user.teacher %}
+<form method="get" action="">
+    <label>Оберіть клас:</label>
+    <select name="class_id" onchange="this.form.submit()">
+        <option value="">Всі класи</option>
+        {% for c in school_classes %}
+            <option value="{{ c.id }}" {% if c.id|stringformat:"s" == selected_class_id %}selected{% endif %}>
+                {{ c.name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+{% endif %}
+
+{% for day, lessons in grouped_schedules.items %}
+    <h2>{{ lessons.0.get_day_of_week_display }}</h2>    
+    <table border="1">
+        <tr>
+            <th>№</th>
+            <th>Предмет</th>
+            <th>Вчитель</th>
+            <th>Час</th>
+        </tr>
+        {% for lesson in lessons %}
+        <tr>
+            <td>{{ lesson.lesson_number }}</td>
+            <td>{{ lesson.subject.name }}</td>
+            <td>{{ lesson.teacher.user.get_full_name }}</td>
+            <td>{{ lesson.start_time }} - {{ lesson.end_time }}</td>
+            <td>
+                {% if user.is_authenticated and user.teacher %}
+                    <a href="{% url 'electronic_diary:schedule-delete' lesson.pk %}">Видалити</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endfor %}
+
+
+</body>
+</html>
