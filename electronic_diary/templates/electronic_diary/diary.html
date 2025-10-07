@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Список завдань</title>
+</head>
+<body>
+
+<h1>Домашні завдання вашого класу</h1>
+
+<strong>
+{% if user.is_authenticated and user.teacher %}
+    <a href="{% url 'electronic_diary:diary-create' %}">Додати нове завдання</a><br>
+{% endif %}
+<a href="{% url 'electronic_diary:schedule' %}">Розклад занять<br>
+    <a href="{% url 'electronic_diary:home' %}">На головну</a><br>
+</strong>
+
+{% if user.teacher %}
+<form method="get" action="" style="margin-bottom: 1em;">
+    <label for="class_id">Оберіть клас:</label>
+    <select name="class_id" id="class_id" onchange="this.form.submit()">
+        <option value="">Всі класи</option>
+        {% for school_class in school_classes %}
+            <option value="{{ school_class.id }}"
+                {% if school_class.id|stringformat:"s" == selected_class_id %}
+                    selected
+                {% endif %}>
+                {{ school_class.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label for="subject" style="margin-left: 1em;">Оберіть предмет:</label>
+    <select name="subject" id="subject" onchange="this.form.submit()">
+        <option value="">Усі предмети</option>
+        {% for subject in subjects %}
+            <option value="{{ subject.id }}"
+                {% if subject.id|stringformat:"s" == selected_subject_id %}
+                    selected
+                {% endif %}>
+                {{ subject.name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+{% endif %}
+
+<ol>
+    {% for entry in object_list %}
+        <li>
+            <strong>Предмет:</strong> {{ entry.subject }}<br>
+            <strong>Вчитель:</strong> {{ entry.teacher.user.first_name }} {{ entry.teacher.user.last_name }}<br>
+            <strong>Домашнє завдання:</strong> {{ entry.homework|urlize }}<br>
+            <strong>До:</strong> {{ entry.due_date }}<br>
+        </li>
+        {% if user.is_authenticated and user.teacher %}
+        <a href="{% url 'electronic_diary:homework-delete' entry.pk %}">Видалити</a>
+        {% endif %}
+        <hr>
+    {% empty %}
+        <li>Немає завдань для вашого класу</li>
+    {% endfor %}
+</ol>
+
+
+
+</body>
+</html>
