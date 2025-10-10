@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'electronic_diary',
     'accounts',
-    'forum'
+    'forum',
+    'events',
+
 ]
 
 MIDDLEWARE = [

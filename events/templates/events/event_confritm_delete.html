@@ -1,0 +1,16 @@
+{% extends "electronic_diary/home.html" %}
+
+{% block title %}Видалити подію{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Видалити подію: "{{ object.title }}"?</h2>
+  <p>Ви впевнені, що хочете видалити цю подію? Цю дію неможливо скасувати.</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Так, видалити</button>
+    <a href="{% url 'events:event_detail' object.pk %}" class="btn btn-secondary">Скасувати</a>
+  </form>
+</div>
+{% endblock %}
