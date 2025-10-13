@@ -8,6 +8,7 @@ urlpatterns = [
     path("", include(("electronic_diary.urls", "electronic_diary"), namespace="electronic_diary")),
     path("accounts/", include(("accounts.urls", "accounts"), namespace="accounts")),
     path("forum/", include(("forum.urls", "forum"), namespace="forum")),
+    path("events/", include("events.urls")),
 ]
 
 if settings.DEBUG:
