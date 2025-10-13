@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from datetime import datetime, timedelta
 
 class Subject(models.Model):
     name = models.CharField(max_length=30)
@@ -28,3 +28,30 @@ class DiaryEntry(models.Model):
 
     def __str__(self):
         return f"{self.school_class} - {self.subject}"
+
+class Schedule(models.Model):
+    DAYS_OF_WEEK = [
+        ('mon', 'Понеділок'),
+        ('tue', 'Вівторок'),
+        ('wed', 'Середа'),
+        ('thu', 'Четвер'),
+        ('fri', 'П’ятниця'),
+        ('sat', 'Субота'),
+    ]
+
+    school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
+    day_of_week = models.CharField(max_length=10, choices=DAYS_OF_WEEK)
+    lesson_number = models.PositiveIntegerField() 
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    def save(self, *args, **kwargs):
+        if self.start_time:
+            dt = datetime.combine(datetime.today(), self.start_time) + timedelta(minutes=45)
+            self.end_time = dt.time()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.school_class} — {self.subject} ({self.day_of_week})"

@@ -10,17 +10,13 @@
 <body>
 <header>
     <div class="logo">
-        <a href="{% url 'electronic_diary:schedule' %}">Мій Щоденник</a>
+        <a href="{% url 'electronic_diary:diary' %}"><strong>Мій Щоденник</strong></a>
     </div>
-    {% if request.path != 'forum:thread_list' %}
-        <nav class="menu">
-            <a href="{% url 'forum:thread_list' %}">Форум</a>
-        </nav>
-    {% endif %}
-        
+    <nav class="menu">
+        <a href="{% url 'forum:thread_list' %}">Форум</a>
     
         {% if request.path != '/' %}
-            <a href="/">Головна</a>
+            | <a href="/">Головна</a>
         {% endif %}
     </nav>
     <div class="user-menu">

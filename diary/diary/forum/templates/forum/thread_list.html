@@ -1,0 +1,22 @@
+{% extends "electronic_diary/home.html" %}
+
+{% block title %}Форум{% endblock %}
+
+{% block content %}
+<h1>Форум</h1>
+
+{% if user.is_staff or user.is_superuser %}
+    <a href="{% url 'forum:thread_create' %}" class="btn">Створити нову тему</a>
+{% endif %}
+
+<ul>
+    {% for thread in threads %}
+        <li>
+            <a href="{% url 'forum:thread_detail' thread.pk %}">{{ thread.title }}</a>
+            <small>Автор: {{ thread.author.username }} | Оновлено: {{ thread.updated_at }}</small>
+        </li>
+    {% empty %}
+        <li>Поки що немає тем.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

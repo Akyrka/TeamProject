@@ -8,11 +8,6 @@
 <body>
     <h1>Профіль {{ profile.user.first_name }} {{ profile.user.last_name }}</h1>
     <h2>Класс {{ profile.school_class }}</h2>
-    {% if user.teacher %}
-        <h2>Статус - Вчитель</h2>
-    {% else %}
-        <h2>Статус - Учень</h2>
-    {% endif %}
 
 
     <img src="https://cdn-icons-png.flaticon.com/512/4837/4837857.png" alt="Аватар" width="150">

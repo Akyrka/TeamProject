@@ -1,0 +1,13 @@
+{% extends "electronic_diary/home.html" %}
+
+{% block title %}Видалення теми{% endblock %}
+
+{% block content %}
+<h1>Ви впевнені, що хочете видалити тему "{{ object.title }}"?</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Так, видалити</button>
+    <a href="{% url 'forum:thread_detail' object.pk %}">Скасувати</a>
+</form>
+{% endblock %}
