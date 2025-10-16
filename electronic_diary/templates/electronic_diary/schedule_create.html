@@ -1,41 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Створити розклад</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<form method="post">
-    {% csrf_token %}
-    
-    <label>Клас:</label><br>
-    {{ form.school_class }}<br>
+<div class="container mt-4">
+    <h1 class="mb-4">Створити розклад</h1>
 
-    <label>Предмет:</label><br>
-    {{ form.subject }}<br>
+    <form method="post" class="row g-3">
+        {% csrf_token %}
 
-    <label>Вчитель:</label><br>
-    {{ form.teacher }}<br>
+        <div class="col-md-6">
+            <label for="id_school_class" class="form-label">Клас</label>
+            <select name="school_class" id="id_school_class" class="form-select">
+                {% for choice in form.school_class.field.choices %}
+                    <option value="{{ choice.0 }}" {% if form.school_class.value == choice.0 %}selected{% endif %}>
+                        {{ choice.1 }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <label>День тижня:</label><br>
-    <select name="day_of_week">  <!-- без multiple -->
-        {% for value, label in form.day_of_week.field.choices %}
-            <option value="{{ value }}" {% if form.day_of_week.value == value %}selected{% endif %}>
-                {{ label }}
-            </option>
-        {% endfor %}
-    </select><br>
+        <div class="col-md-6">
+            <label for="id_subject" class="form-label">Предмет</label>
+            <select name="subject" id="id_subject" class="form-select">
+                {% for choice in form.subject.field.choices %}
+                    <option value="{{ choice.0 }}" {% if form.subject.value == choice.0 %}selected{% endif %}>
+                        {{ choice.1 }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <label>Номер уроку:</label><br>
-    {{ form.lesson_number }}<br>
+        <div class="col-md-6">
+            <label for="id_teacher" class="form-label">Вчитель</label>
+            <select name="teacher" id="id_teacher" class="form-select">
+                {% for choice in form.teacher.field.choices %}
+                    <option value="{{ choice.0 }}" {% if form.teacher.value == choice.0 %}selected{% endif %}>
+                        {{ choice.1 }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <label>Час початку:</label><br>
-    {{ form.start_time }}<br>
+        <div class="col-md-6">
+            <label for="id_day_of_week" class="form-label">День тижня</label>
+            <select name="day_of_week" id="id_day_of_week" class="form-select">
+                {% for value, label in form.day_of_week.field.choices %}
+                    <option value="{{ value }}" {% if form.day_of_week.value == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <button type="submit">Створити розклад</button>
-</form>
+        <div class="col-md-6">
+            <label for="id_lesson_number" class="form-label">Номер уроку</label>
+            {{ form.lesson_number }}
+        </div>
 
+        <div class="col-md-6">
+            <label for="id_start_time" class="form-label">Час початку</label>
+            {{ form.start_time }}
+        </div>
 
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Створити розклад</button>
+            <a href="{% url 'electronic_diary:schedule' %}" class="btn btn-secondary">Назад</a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

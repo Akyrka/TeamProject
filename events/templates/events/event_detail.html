@@ -1,0 +1,20 @@
+{% extends "electronic_diary/home.html" %}
+
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>{{ event.title }}</h2>
+  <p class="text-muted">
+    {{ event.start_time|date:"d.m.Y H:i" }} — {{ event.end_time|date:"d.m.Y H:i" }}
+  </p>
+  <p>{{ event.description }}</p>
+  <p><strong>Статус:</strong> {{ event.status }}</p>
+
+  {% if user.is_staff or user.is_superuser %}
+    <hr>
+    <a href="{% url 'events:event_update' event.pk %}" class="btn btn-warning">Редагувати</a>
+    <a href="{% url 'events:event_delete' event.pk %}" class="btn btn-danger">Видалити</a>
+  {% endif %}
+</div>
+{% endblock %}

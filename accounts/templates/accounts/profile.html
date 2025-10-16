@@ -1,32 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ profile.user.username }}'s Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Профіль {{ profile.user.first_name }} {{ profile.user.last_name }}</h1>
-    <h2>Класс {{ profile.school_class }}</h2>
-    {% if user.teacher %}
-        <h2>Статус - Вчитель</h2>
-    {% else %}
-        <h2>Статус - Учень</h2>
-    {% endif %}
 
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/4837/4837857.png" alt="Аватар" class="rounded-circle mb-3" width="150">
+        <h1 class="mb-1">{{ profile.user.first_name }} {{ profile.user.last_name }}</h1>
+        <h5 class="text-muted">Клас: {{ profile.school_class }}</h5>
+        {% if user.teacher %}
+            <span class="badge bg-success mt-2">Вчитель</span>
+        {% else %}
+            <span class="badge bg-primary mt-2">Учень</span>
+        {% endif %}
+    </div>
 
-    <img src="https://cdn-icons-png.flaticon.com/512/4837/4837857.png" alt="Аватар" width="150">
+    <div class="d-flex justify-content-center gap-2 mb-4">
+        <a href="{% url 'accounts:profile_edit' %}" class="btn btn-warning">Редагувати профіль</a>
+        <form action="{% url 'accounts:logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Вийти з акаунта</button>
+        </form>
+        <a href="{% url 'electronic_diary:home' %}" class="btn btn-secondary">Головна</a>
+    </div>
+    
+    <!-- <div class="card mt-3">
+        <div class="card-body">
+            <p>Тут можна додати додаткову інформацію про користувача або статистику.</p>
+        </div>
+    </div> -->
+</div>
 
-
-    <p><a href="{% url 'accounts:profile_edit' %}">Редагувати профіль</a></p>
-
-
-    <form action="{% url 'accounts:logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Вийти з акаунта</button>
-    </form>
-
-
-    <p><a href="{% url 'electronic_diary:home' %}">Повернутись на головну</a></p>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
