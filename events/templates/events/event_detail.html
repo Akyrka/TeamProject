@@ -1,20 +1,24 @@
 {% extends "electronic_diary/home.html" %}
-
 {% block title %}{{ event.title }}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2>{{ event.title }}</h2>
-  <p class="text-muted">
-    {{ event.start_time|date:"d.m.Y H:i" }} — {{ event.end_time|date:"d.m.Y H:i" }}
-  </p>
-  <p>{{ event.description }}</p>
-  <p><strong>Статус:</strong> {{ event.status }}</p>
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title">{{ event.title }}</h4>
+      <p class="text-muted small">
+        {{ event.start_time|date:"d.m.Y H:i" }} — {{ event.end_time|date:"d.m.Y H:i" }}
+      </p>
+      <p>{{ event.description }}</p>
+      <p><strong>Статус:</strong> {{ event.status }}</p>
 
-  {% if user.is_staff or user.is_superuser %}
-    <hr>
-    <a href="{% url 'events:event_update' event.pk %}" class="btn btn-warning">Редагувати</a>
-    <a href="{% url 'events:event_delete' event.pk %}" class="btn btn-danger">Видалити</a>
-  {% endif %}
+      {% if user.is_staff or user.is_superuser %}
+      <div class="mt-3 d-flex gap-2 flex-wrap">
+        <a href="{% url 'events:event_update' event.pk %}" class="btn btn-warning btn-sm">✏️ Редагувати</a>
+        <a href="{% url 'events:event_delete' event.pk %}" class="btn btn-danger btn-sm">🗑 Видалити</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}

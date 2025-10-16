@@ -1,49 +1,44 @@
 {% extends "electronic_diary/home.html" %}
+{% block title %}Календар подій{% endblock %}
+
 {% block content %}
 <div class="container my-4">
-  <h2 class="text-center mb-3">Календар подій {{ month }}/{{ year }}</h2>
+  <h4 class="text-center mb-3">Календар подій {{ month }}/{{ year }}</h4>
 
-  <div class="d-flex justify-content-between mb-3">
-    <a class="btn btn-outline-primary"
-       href="?year={{ year }}&month={{ month|add:'-1' }}">← Попередній</a>
-    <a class="btn btn-outline-primary"
-       href="?year={{ year }}&month={{ month|add:'1' }}">Наступний →</a>
+  <div class="d-flex justify-content-between mb-3 flex-wrap">
+    <a class="btn btn-outline-primary btn-sm mb-2" href="?year={{ year }}&month={{ month|add:'-1' }}">← Попередній</a>
+    <a class="btn btn-outline-primary btn-sm mb-2" href="?year={{ year }}&month={{ month|add:'1' }}">Наступний →</a>
   </div>
 
-  <table class="table table-bordered text-center align-middle">
-    <thead class="table-dark">
-      <tr>
-        <th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Нд</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for week in month_days|slice:":35"|unordered_list %}
-      {% endfor %}
-      <tr>
+  <div class="table-responsive">
+    <table class="table table-bordered text-center align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Нд</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
         {% for day in month_days %}
-          {% if forloop.counter0|divisibleby:7 %}
-            </tr><tr>
-          {% endif %}
-          {% if day.month == month %}
-            <td class="p-2">
+          {% if forloop.counter0|divisibleby:7 %}</tr><tr>{% endif %}
+          <td class="{% if day.month != month %}bg-light{% endif %} p-2">
+            {% if day.month == month %}
               <strong>{{ day.day }}</strong>
               {% if day.day in day_events %}
                 {% for event in day_events.day %}
                   <div class="mt-1">
-                    <a href="{% url 'events:event_detail' event.pk %}"
-                       class="badge bg-primary text-decoration-none">
+                    <a href="{% url 'events:event_detail' event.pk %}" class="badge bg-primary text-decoration-none">
                       {{ event.title|truncatechars:15 }}
                     </a>
                   </div>
                 {% endfor %}
               {% endif %}
-            </td>
-          {% else %}
-            <td class="bg-light"></td>
-          {% endif %}
+            {% endif %}
+          </td>
         {% endfor %}
-      </tr>
-    </tbody>
-  </table>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock %}

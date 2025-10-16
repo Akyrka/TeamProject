@@ -1,18 +1,22 @@
 {% extends "electronic_diary/home.html" %}
-
 {% block title %}{{ view.object|default:"Нова подія" }}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2 class="mb-3">
-    {% if view.object %}Редагувати подію{% else %}Створити нову подію{% endif %}
-  </h2>
-
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Зберегти</button>
-    <a href="{% url 'events:event_list' %}" class="btn btn-secondary">Скасувати</a>
-  </form>
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title mb-3 text-center">
+        {% if view.object %}Редагувати подію{% else %}Створити нову подію{% endif %}
+      </h4>
+      <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex justify-content-between mt-3">
+          <button type="submit" class="btn btn-primary">💾 Зберегти</button>
+          <a href="{% url 'events:event_list' %}" class="btn btn-outline-secondary">⬅ Назад</a>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}
