@@ -42,18 +42,18 @@ class ScheduleListView(LoginRequiredMixin, ListView):
         request = self.request
         queryset = models.Schedule.objects.order_by("day_of_week", "lesson_number")
 
-        # Читаем выбранный класс из GET или из сессии
+
         class_id = request.GET.get("class_id")
         if class_id:
             request.session["selected_class_id"] = class_id
         else:
             class_id = request.session.get("selected_class_id")
 
-        # Фильтруем по роли
+
         if hasattr(user, "teacher"):
             if class_id:
                 queryset = queryset.filter(school_class_id=class_id)
-        else:  # ученик
+        else: 
             profile = getattr(user, "profile", None)
             if profile and profile.school_class:
                 queryset = queryset.filter(school_class=profile.school_class)
@@ -70,7 +70,6 @@ class ScheduleListView(LoginRequiredMixin, ListView):
             grouped.setdefault(sched.day_of_week, []).append(sched)
         context["grouped_schedules"] = grouped
 
-        # Добавляем список всех классов (для учителя)
         if hasattr(self.request.user, "teacher"):
             context["school_classes"] = models.SchoolClass.objects.all()
             context["selected_class_id"] = self.request.session.get("selected_class_id")
@@ -90,7 +89,7 @@ class DiaryListView(LoginRequiredMixin, ListView):
         user = self.request.user
         request = self.request
 
-        # Получаем фильтры из GET
+
         school_class_id = request.GET.get("class_id")
         subject_id = request.GET.get("subject")
 
