@@ -79,16 +79,11 @@ class ScheduleListView(LoginRequiredMixin, ListView):
 
 
 
-
-
-class DiaryDetailView(LoginRequiredMixin, DetailView):
-    model = models.DiaryEntry
-    template_name = "electronic_diary/diary.html"
-
-
 class DiaryListView(LoginRequiredMixin, ListView):  
     model = models.DiaryEntry
     template_name = "electronic_diary/diary.html"
+    context_object_name = "object_list"
+    paginate_by = 10 
 
 
     def get_queryset(self):
@@ -146,6 +141,7 @@ class DiaryListView(LoginRequiredMixin, ListView):
         context["selected_subject_id"] = request.session.get("selected_subject_id")
 
         return context
+
 
 
 
