@@ -81,58 +81,63 @@ class ScheduleListView(LoginRequiredMixin, ListView):
 class DiaryListView(LoginRequiredMixin, ListView):  
     model = models.DiaryEntry
     template_name = "electronic_diary/diary.html"
-    context_object_name = "object_list"
-    paginate_by = 10 
-
+    context_object_name = "page_obj"
+    paginate_by = 10  
 
     def get_queryset(self):
         user = self.request.user
         request = self.request
 
-
+        # Получаем фильтры из GET
         school_class_id = request.GET.get("class_id")
         subject_id = request.GET.get("subject")
 
-        # Если фильтры переданы — сохраняем их в сессии
-        if school_class_id:
-            request.session["selected_class_id"] = school_class_id
-        elif school_class_id == "":
-            request.session.pop("selected_class_id", None)
+        # Сохраняем фильтры в сессии
+        if school_class_id is not None:
+            if school_class_id == "":
+                request.session.pop("selected_class_id", None)
+            else:
+                request.session["selected_class_id"] = school_class_id
         else:
             school_class_id = request.session.get("selected_class_id")
 
-        if subject_id:
-            request.session["selected_subject_id"] = subject_id
-        elif subject_id == "":
-            request.session.pop("selected_subject_id", None)
+        if subject_id is not None:
+            if subject_id == "":
+                request.session.pop("selected_subject_id", None)
+            else:
+                request.session["selected_subject_id"] = subject_id
         else:
             subject_id = request.session.get("selected_subject_id")
 
+        # Базовый queryset
+        queryset = models.DiaryEntry.objects.all().order_by("-due_date")
 
-        queryset = models.DiaryEntry.objects.all()
+        # Определяем роль пользователя
+        teacher = getattr(user, "teacher", None)
+        profile = getattr(user, "profile", None)
 
         # Фильтрация по роли
-        if hasattr(user, "teacher"):
+        if teacher:
             if school_class_id:
                 queryset = queryset.filter(school_class_id=school_class_id)
+        elif profile and profile.school_class:
+            queryset = queryset.filter(school_class=profile.school_class)
         else:
-            profile = getattr(user, "profile", None)
-            if profile and profile.school_class:
-                queryset = queryset.filter(school_class=profile.school_class)
-            else:
-                return models.DiaryEntry.objects.none()
+            return models.DiaryEntry.objects.none()
 
+        # Фильтрация по предмету
         if subject_id:
             queryset = queryset.filter(subject_id=subject_id)
 
         return queryset
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         request = self.request
 
-        if hasattr(request.user, "teacher"):
+        teacher = getattr(request.user, "teacher", None)
+
+        if teacher:
             context["school_classes"] = models.SchoolClass.objects.all()
             context["selected_class_id"] = request.session.get("selected_class_id")
 
@@ -140,7 +145,6 @@ class DiaryListView(LoginRequiredMixin, ListView):
         context["selected_subject_id"] = request.session.get("selected_subject_id")
 
         return context
-
 
 
 
