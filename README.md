@@ -1,13 +1,15 @@
 # TeamProject
 
+## Authors: Andrii Yermakov and Vova Murai
+
 Django project for electronic diary and forum.
 
 [Usage](#usage)
 
 ## Description
 
-This project includes:
-
+* User profile and changing it
+* Event notification
 * Homework management
 * Class schedule
 * Forum for communication
